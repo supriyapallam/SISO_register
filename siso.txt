@@ -1,0 +1,42 @@
+//Design Code
+module SISO_reg(output reg out,input clk,in);
+  reg q1,q2,q3;
+  always@(posedge clk)
+    begin
+      q1<=in;
+      q2<=q1;
+      q3<=q2;
+      out<=q3;
+    end
+endmodule
+
+
+//Test Bench Code
+module tb();
+  reg clk,in;
+  wire out;
+  SISO_reg dut(out,clk,in);
+  initial
+    begin
+      clk=1'b0;
+      forever #5 clk=~clk;
+    end
+  initial
+    begin
+      @(negedge clk) in=1'b1;
+      @(negedge clk) in=1'b0;
+      @(negedge clk) in=1'b1;
+      @(negedge clk) in=1'b0;
+      @(negedge clk) in=1'b1;
+      @(negedge clk) in=1'b0;
+      @(negedge clk) in=1'b1;
+      @(negedge clk) in=1'b0;
+      $finish;
+    end
+  initial
+    begin
+      $dumpfile("test.vcd");
+      $dumpvars(1);
+    end
+endmodule
+
